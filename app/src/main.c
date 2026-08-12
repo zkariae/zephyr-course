@@ -37,11 +37,22 @@ void thread_t_high_fn(void *p1, void *p2, void *p3)
 
 void thread_t_coop_fn(void *p1, void *p2, void *p3)
 {
-    for(int i = 0; i < 5; i++) {
+    while (1) {
+        for (int i = 0; i < 5; i++) {
             LOG_DBG("T_COOP running %d", i);
+            k_busy_wait(500);
         }
-    LOG_DBG("T_COOP finished");    
-    k_yield();
+        LOG_DBG("T_COOP finished, yielding");
+        k_yield();
+
+        /* k_yield() only hands off to threads of the same or higher
+         * priority (see k_yield() doc) -- since T_LOW/MED/HIGH are all
+         * lower priority than this cooperative thread, k_yield() alone
+         * never lets them run. k_msleep() actually blocks this thread,
+         * which is what frees the CPU for them.
+         */
+        k_msleep(500);
+    }
 }
 
 K_THREAD_DEFINE(thread_t_low, STACK_SIZE, thread_t_low_fn,
