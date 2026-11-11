@@ -1,12 +1,10 @@
 #include <zephyr/kernel.h>
-#include <zephyr/logging/log.h>
-
-LOG_MODULE_REGISTER(demo, LOG_LEVEL_DBG);
+#include <zephyr/sys/printk.h>
 
 #define STACK_SIZE 1024
 
 #define PRIO_LOW 7
-#define PRIO_MED 5 
+#define PRIO_MED 5
 #define PRIO_HIGH 3
 #define PRIO_COOP -1
 
@@ -14,7 +12,7 @@ LOG_MODULE_REGISTER(demo, LOG_LEVEL_DBG);
 void thread_t_low_fn(void *p1, void *p2, void *p3)
 {
     while (1) {
-        LOG_DBG("T_LOW running");
+        printk("T_LOW running\n");
         k_msleep(300);
     }
 }
@@ -22,7 +20,7 @@ void thread_t_low_fn(void *p1, void *p2, void *p3)
 void thread_t_med_fn(void *p1, void *p2, void *p3)
 {
     while (1) {
-        LOG_DBG("T_MED running");
+        printk("T_MED running\n");
         k_msleep(200);
     }
 }
@@ -30,7 +28,7 @@ void thread_t_med_fn(void *p1, void *p2, void *p3)
 void thread_t_high_fn(void *p1, void *p2, void *p3)
 {
     while (1) {
-        LOG_DBG("T_HIGH running");
+        printk("T_HIGH running\n");
         k_msleep(100);
     }
 }
@@ -39,10 +37,10 @@ void thread_t_coop_fn(void *p1, void *p2, void *p3)
 {
     while (1) {
         for (int i = 0; i < 5; i++) {
-            LOG_DBG("T_COOP running %d", i);
+            printk("T_COOP running %d\n", i);
             k_busy_wait(500);
         }
-        LOG_DBG("T_COOP finished, yielding");
+        printk("T_COOP finished, yielding\n");
         k_yield();
 
         /* k_yield() only hands off to threads of the same or higher
