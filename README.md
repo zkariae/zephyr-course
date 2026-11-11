@@ -13,3 +13,35 @@ Follow the following guide:
 
 Make sure to select appropriate OS and to perform all steps till
 [Build the Blinky Sample](https://docs.zephyrproject.org/latest/develop/getting_started/index.html#build-the-blinky-sample).
+
+---
+
+## Build and Flash
+
+Activate the Python virtual environment:
+
+```
+. /opt/python/venv/bin/activate
+```
+
+Build (from the repository root):
+
+```
+west build -b stm32f7508_dk -d build app
+```
+
+Flash:
+
+```
+west flash --build-dir build --runner openocd
+```
+
+### Selecting a module
+
+Each course module lives in `app/moduleX/` (`src/main.c` + `README.md`) and
+shares `app/CMakeLists.txt` and `app/prj.conf`. Select the module with
+`-DMODULE` (default: `module1`):
+
+```
+west build -b stm32f7508_dk -d build app -- -DMODULE=module2
+```
