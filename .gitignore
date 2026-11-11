@@ -1,6 +1,5 @@
 # Build
-build
-build-race_condition
+build*/
 
 # West files
 .west
