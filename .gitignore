@@ -1,6 +1,9 @@
 # Build
 build*/
 
+# UART logs
+result/
+
 # West files
 .west
 deps
