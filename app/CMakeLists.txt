@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.20.0)
 
 set(MODULE module1 CACHE STRING "Course module to build (app/<MODULE>/src/main.c)")
 
+# Optional module-specific Kconfig fragment, merged on top of app/prj.conf
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/prj.conf)
+    set(EXTRA_CONF_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/prj.conf)
+endif()
+
 find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 project(${MODULE})
 
