@@ -14,4 +14,5 @@ if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/src/main.c)
     message(FATAL_ERROR "Unknown module '${MODULE}': app/${MODULE}/src/main.c not found")
 endif()
 
-target_sources(app PRIVATE ${MODULE}/src/main.c)
+file(GLOB MODULE_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}/src/*.c)
+target_sources(app PRIVATE ${MODULE_SOURCES})
