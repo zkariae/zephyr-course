@@ -37,8 +37,11 @@ static int custom_sensor_channel_get(const struct device *dev, enum sensor_chann
 
 /* ---- Fake sensor device -------------------------------------------------- */
 
-/* The API table temp_alarm.c calls through. */
-static const struct sensor_driver_api fake_sensor_api = {
+/*
+ * The API table temp_alarm.c calls through. DEVICE_API() puts it in the sensor
+ * API section, which sensor.h asserts on (Zephyr > 4.4.0).
+ */
+DEVICE_API(sensor, fake_sensor_api) = {
 	.sample_fetch = fake_sensor_sample_fetch,
 	.channel_get = fake_sensor_channel_get,
 };
