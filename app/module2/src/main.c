@@ -3,11 +3,13 @@
 
 #define STACK_SIZE      1024
 #define PRIO            5
-#define INCREMENTS      1000000 /* each thread increments this many times */
+#define INCREMENTS      200000  /* each thread increments this many times */
 #define TIME_SLICE_MS   1       /* short slices -> frequent preemption */
 
-/* Shared state - intentionally unprotected */
+/* Shared state - protected by counter_mutex */
 static volatile uint32_t counter;
+
+static K_MUTEX_DEFINE(counter_mutex);
 
 static struct k_sem done_sem;
 
@@ -16,7 +18,9 @@ void worker_fn(void *p1, void *p2, void *p3)
     const char *name = k_thread_name_get(k_current_get());
 
     for (int i = 0; i < INCREMENTS; i++) {
+        k_mutex_lock(&counter_mutex, K_FOREVER);
         counter++;
+        k_mutex_unlock(&counter_mutex);
     }
 
     printk("[%s] finished\n", name);
